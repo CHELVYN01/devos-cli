@@ -1,0 +1,28 @@
+[
+    {
+        "name": "Example Project 1",
+        "python": "C:/path/to/python/python.exe",
+        "odoo_bin": "C:/path/to/odoo/odoo-bin",
+        "config_file": "C:/path/to/project/odoo.conf",
+        "args": [
+            "-d",
+            "database_name",
+            "-u",
+            "module_name",
+            "--dev=all"
+        ],
+        "work_dir": "C:/path/to/project"
+    },
+    {
+        "name": "Example Project 2",
+        "python": "C:/path/to/python/python.exe",
+        "odoo_bin": "C:/path/to/odoo/odoo-bin",
+        "config_file": "C:/path/to/another-project/odoo.conf",
+        "args": [
+            "-d",
+            "another_database",
+            "--dev=xml"
+        ],
+        "work_dir": "C:/path/to/another-project"
+    }
+]
