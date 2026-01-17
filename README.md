@@ -20,7 +20,7 @@
 
 | Without DevOS | With DevOS |
 |---------------|------------|
-| Open VS Code → Select Project → Click Run → Wait | `devos run mesa` → Done! |
+| Open VS Code → Select Project → Click Run → Wait | `devos run myproject` → Done! |
 | ~10 seconds startup | < 1 second |
 | Limited terminal control | Full native terminal |
 | Manual cache clearing | `--clean` flag auto-clears |
@@ -128,19 +128,19 @@ This opens `projects.json` in VS Code automatically.
 devos list
 
 # Start a project
-devos run mesa
+devos run myproject
 
 # Start with cache cleaning
-devos run mesa --clean
+devos run myproject --clean
 
 # Start in debug mode (VS Code debugging)
-devos run mesa --debug
+devos run myproject --debug
 
 # Combine flags
-devos run mesa --clean --debug
+devos run myproject --clean --debug
 
 # Add runtime arguments
-devos run mesa --dev=xml --limit-time-real=99999
+devos run myproject --dev=xml --limit-time-real=99999
 
 # Edit configuration
 devos edit
@@ -150,7 +150,7 @@ devos edit
 
 1. **Start DevOS in debug mode:**
    ```bash
-   devos run mesa --debug
+   devos run myproject --debug
    ```
 
 2. **In VS Code**, add this to `.vscode/launch.json`:
@@ -177,16 +177,16 @@ Override or extend default arguments without editing `projects.json`:
 
 ```bash
 # Change dev mode
-devos run mesa --dev=xml
+devos run myproject --dev=xml
 
 # Add time limits
-devos run mesa --limit-time-real=99999 --limit-time-cpu=99999
+devos run myproject --limit-time-real=99999 --limit-time-cpu=99999
 
 # Disable specific modules
-devos run mesa --load=web,base
+devos run myproject --load=web,base
 
 # Combine with clean
-devos run mesa --clean --dev=reload
+devos run myproject --clean --dev=reload
 ```
 
 ## 🛠️ Troubleshooting
@@ -230,7 +230,7 @@ cargo build --release
 
 # Run without installing
 cargo run -- list
-cargo run -- run mesa
+cargo run -- run myproject
 ```
 
 ## 📝 Project Structure
