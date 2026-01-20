@@ -52,11 +52,32 @@ struct ProjectConfig {
 async fn main() -> Result<()> {
     let cli = Cli::parse();
 
-    // 1. Load Projects (from exe directory)
+    // 1. Resolve Config Path (from exe directory)
     let exe_path = std::env::current_exe().context("Failed to get executable path")?;
     let exe_dir = exe_path.parent().context("Failed to get executable directory")?;
     let config_path = exe_dir.join("projects.json");
+
+    // Handle Edit command independently to allow fixing broken JSON
+    if let Commands::Edit = &cli.command {
+        println!("📝 Opening projects.json in VS Code...");
+        let result = std::process::Command::new("code")
+            .arg(&config_path)
+            .spawn();
+        
+        match result {
+            Ok(_) => println!("✅ VS Code launched!"),
+            Err(_) => {
+                println!("⚠️  VS Code not found. Opening in default editor...");
+                // Fallback to notepad on Windows
+                let _ = std::process::Command::new("notepad")
+                    .arg(&config_path)
+                    .spawn();
+            }
+        }
+        return Ok(());
+    }
     
+    // 2. Load Projects
     let content = fs::read_to_string(&config_path)
         .context(format!("Could not find 'projects.json' at {:?}", config_path))?;
     let projects: Vec<ProjectConfig> = serde_json::from_str(&content).context("Invalid JSON in projects.json")?;
@@ -69,23 +90,7 @@ async fn main() -> Result<()> {
                 println!("- {}  (Dir: {})", p.name, p.work_dir);
             }
         }
-        Commands::Edit => {
-            println!("📝 Opening projects.json in VS Code...");
-            let result = std::process::Command::new("code")
-                .arg(&config_path)
-                .spawn();
-            
-            match result {
-                Ok(_) => println!("✅ VS Code launched!"),
-                Err(_) => {
-                    println!("⚠️  VS Code not found. Opening in default editor...");
-                    // Fallback to notepad on Windows
-                    let _ = std::process::Command::new("notepad")
-                        .arg(&config_path)
-                        .spawn();
-                }
-            }
-        }
+        Commands::Edit => unreachable!(), // Handled above
         Commands::Run { project_name, clean, debug, extra_args } => {
             // 2. Find Project (Case Insensitive Match)
             let project = projects.into_iter()
